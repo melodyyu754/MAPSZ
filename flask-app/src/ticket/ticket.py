@@ -3,16 +3,16 @@ import json
 from src import db
 
 
-crew = Blueprint('products', __name__)
+ticket = Blueprint('products', __name__)
 
 # Get all the products from the database
-@crew.route('/crew', methods=['GET'])
+@ticket.route('/ticket', methods=['GET'])
 def get_products():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of products
-    cursor.execute('SELECT ticketID, flightID FROM crew')
+    cursor.execute('SELECT ticketID, flightID, seatNum, class, price, boardingGroup, passengerID FROM ticket')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -31,10 +31,10 @@ def get_products():
 
     return jsonify(json_data)
 
-@crew.route('/crew/<id>', methods=['GET'])
+@ticket.route('/ticket/<id>', methods=['GET'])
 def get_product_detail (id):
 
-    query = 'SELECT ticketID, flightID FROM crew WHERE flightID = ' + str(id)
+    query = 'SELECT ticketID, flightID, seatNum, class, price, boardingGroup, passengerID FROM ticket WHERE ticketID = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()

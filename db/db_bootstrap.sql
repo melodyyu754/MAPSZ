@@ -53,7 +53,6 @@ CREATE TABLE IF NOT EXISTS airplane (
 
 
 
-
 /* travel agency table */
 CREATE TABLE IF NOT EXISTS travelAgency(
   agencyID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,

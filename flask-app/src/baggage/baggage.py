@@ -30,3 +30,57 @@ def get_baggage():
         json_data.append(dict(zip(column_headers, row)))
 
     return jsonify(json_data)
+
+    # Get a specific airport from the database
+@airports.route('/baggage/<id>', methods=['GET'])
+def get_airport_detail (id):
+
+    query = 'SELECT baggageID, ticketID, passengerID, weight FROM baggage WHERE baggageID = ' + str(id)
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    column_headers = [x[0] for x in cursor.description]
+    json_data = []
+    the_data = cursor.fetchall()
+    for row in the_data:
+        json_data.append(dict(zip(column_headers, row)))
+    return jsonify(json_data)
+
+#CHANGE!!!
+# Adds a new airlineFlightEmployee
+@baggage.route('/baggage', methods=['POST'])
+def add_new_airline_flight_employee():
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    employeeID = the_data['employeeID']
+    fName = the_data['fName']
+    lName = the_data['lName']
+    salary = the_data['salary']
+    title = the_data['title']
+    sex = the_data['sex']
+    emailAddress = the_data['emailAddress']
+    birthDate = the_data['birthDate']
+
+    # Constructing the query
+    query = 'insert into airlineFlightEmployees (employeeID, fName, lName, salary, title, sex, emailAddress, birthDate) values ("'
+    query += employeeID + '", "'
+    query += fName + '", "'
+    query += lName + '", '
+    query += salary + '", '
+    query += title + '", '
+    query += sex + '", '
+    query += emailAddress + '", '
+    query += birthDate + '", '
+    current_app.logger.info(query)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
