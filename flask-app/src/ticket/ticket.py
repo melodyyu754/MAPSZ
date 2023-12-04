@@ -69,9 +69,9 @@ def add_new_ticket():
     passengerID = the_data['passengerID']
 
      # grab order_id and previous drink price for the given drink
-    flightInfo = get_flight_detail(flightID)
+    flightInfo = get_flight_details(flightID)
     
-    prevSeatsAvailable = str(filghtInfo['seatsAvailable'])
+    prevSeatsAvailable = str(flightInfo['seatsAvailable'])
     
     # calculate price change (if any)
     seat_change = float(prevSeatsAvailable) + 1
@@ -109,9 +109,9 @@ def delete_ticket(ticketID):
     '''.format(ticketID)
  
      # grab order_id and previous drink price for the given drink
-    flightInfo = get_flight_detail(flightID)
+    flightInfo = get_flight_details(flightID)
     
-    prevSeatsAvailable = str(filghtInfo['seatsAvailable'])
+    prevSeatsAvailable = str(flightInfo['seatsAvailable'])
     
     # calculate price change (if any)
     seat_change = float(prevSeatsAvailable) - 1
