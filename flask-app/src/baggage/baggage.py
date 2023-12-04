@@ -32,8 +32,8 @@ def get_baggage():
     return jsonify(json_data)
 
     # Get a specific airport from the database
-@airports.route('/baggage/<id>', methods=['GET'])
-def get_airport_detail (id):
+@baggage.route('/baggage/<id>', methods=['GET'])
+def get_baggage_detail (id):
 
     query = 'SELECT baggageID, ticketID, passengerID, weight FROM baggage WHERE baggageID = ' + str(id)
     current_app.logger.info(query)
@@ -48,34 +48,28 @@ def get_airport_detail (id):
     return jsonify(json_data)
 
 #CHANGE!!!
-# Adds a new airlineFlightEmployee
+# Adds a new baggage
 @baggage.route('/baggage', methods=['POST'])
-def add_new_airline_flight_employee():
+def add_new_baggage():
     
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
 
     #extracting the variable
-    employeeID = the_data['employeeID']
-    fName = the_data['fName']
-    lName = the_data['lName']
-    salary = the_data['salary']
-    title = the_data['title']
-    sex = the_data['sex']
-    emailAddress = the_data['emailAddress']
-    birthDate = the_data['birthDate']
+    baggageID = the_data['baggageID']
+    passengerID = the_data['passengerID']
+    ticketID = the_data['ticketID']
+    flightID = the_data['flightID']
+    weight = the_data['weight']
 
     # Constructing the query
-    query = 'insert into airlineFlightEmployees (employeeID, fName, lName, salary, title, sex, emailAddress, birthDate) values ("'
-    query += employeeID + '", "'
-    query += fName + '", "'
-    query += lName + '", '
-    query += salary + '", '
-    query += title + '", '
-    query += sex + '", '
-    query += emailAddress + '", '
-    query += birthDate + '", '
+    query = 'insert into baggage (baggageID, passengerID, ticketID, flightID, weight) values ("'
+    query += baggageID + '", "'
+    query += passengerID+ '", "'
+    query += ticketID + '", '
+    query += flightID + '", '
+    query += weight+ '", '
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -84,3 +78,20 @@ def add_new_airline_flight_employee():
     db.get_db().commit()
     
     return 'Success!'
+
+
+
+# Deletes a given baggage
+@baggage.route('/deleteBaggage/<baggageID>', methods=['DELETE'])
+def delete_baggage(baggageID):
+    query = '''
+        DELETE
+        FROM Baggage
+        WHERE baggageID = {0};
+    '''.format(baggageID)
+    
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    
+    db.get_db().commit()
+    return "successfully deleted baggage #{0}!".format(baggageID)

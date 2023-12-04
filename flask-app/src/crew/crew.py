@@ -7,7 +7,7 @@ crew = Blueprint('products', __name__)
 
 # Get all the products from the database
 @crew.route('/crew', methods=['GET'])
-def get_products():
+def get_crew():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -32,7 +32,7 @@ def get_products():
     return jsonify(json_data)
 
 @crew.route('/crew/<id>', methods=['GET'])
-def get_product_detail (id):
+def get_crew_detail (id):
 
     query = 'SELECT ticketID, flightID FROM crew WHERE flightID = ' + str(id)
     current_app.logger.info(query)
