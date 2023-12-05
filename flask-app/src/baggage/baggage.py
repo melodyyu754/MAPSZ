@@ -47,7 +47,6 @@ def get_baggage_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-#CHANGE!!!
 # Adds a new baggage
 @baggage.route('/baggage', methods=['POST'])
 def add_new_baggage():
@@ -80,21 +79,6 @@ def add_new_baggage():
     return 'Success!'
 
 
-
-# Deletes a given baggage
-@baggage.route('/deleteBaggage/<baggageID>', methods=['DELETE'])
-def delete_baggage(baggageID):
-    query = '''
-        DELETE
-        FROM Baggage
-        WHERE baggageID = {0};
-    '''.format(baggageID)
-    
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    
-    db.get_db().commit()
-    return "successfully deleted baggage #{0}!".format(baggageID)
 
 # Deletes a given baggage
 @baggage.route('/deleteBaggage/<baggageID>', methods=['DELETE'])

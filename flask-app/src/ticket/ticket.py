@@ -3,10 +3,10 @@ import json
 from src import db
 
 
-ticket = Blueprint('products', __name__)
+tickets = Blueprint('ticket', __name__)
 
 # Get all the products from the database
-@ticket.route('/ticket', methods=['GET'])
+@tickets.route('/ticket', methods=['GET'])
 def get_products():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
@@ -32,8 +32,8 @@ def get_products():
     return jsonify(json_data)
 
 # Get all the products of this id from the database
-@ticket.route('/ticket/<id>', methods=['GET'])
-def get_product_detail (id):
+@tickets.route('/ticket/<id>', methods=['GET'])
+def get_ticket_detail (id):
 
     query = 'SELECT ticketID, flightID, seatNum, class, price, boardingGroup, passengerID FROM ticket WHERE ticketID = ' + str(id)
     current_app.logger.info(query)
@@ -50,7 +50,7 @@ def get_product_detail (id):
 
 
 # Adds a new ticket
-@ticket.route('/ticket', methods=['POST'])
+@tickets.route('/ticket', methods=['POST'])
 def add_new_ticket():
     
     # collecting data from the request object 
@@ -68,17 +68,6 @@ def add_new_ticket():
     boardingGroup = the_data['boardingGroup']
     passengerID = the_data['passengerID']
 
-     # grab order_id and previous drink price for the given drink
-    flightInfo = get_flight_details(flightID)
-    
-    prevSeatsAvailable = str(flightInfo['seatsAvailable'])
-    
-    # calculate price change (if any)
-    seat_change = float(prevSeatsAvailable) + 1
-    
-    # update order total price
-    seat_query = 'UPDATE `flight` SET seatsAvailable = ' + str(seat_change) + ' WHERE flight_id = ' + str(flightID) + ';'
-
     # Constructing the query
     query = 'insert into ticket (ticketID, flightID, seatNum, class, price, boardingGroup, passengerID) values ("'
     query += ticketID + '", "'
@@ -93,42 +82,29 @@ def add_new_ticket():
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    cursor.execute(seat_query)
     db.get_db().commit()
     
     return 'Success!'
 
 # Deletes a given ticket
 # Deletes all baggage that contain that drink as well
-@ticket.route('/deleteTicket/<ticketID>', methods=['DELETE'])
+@tickets.route('/deleteTicket/<ticketID>', methods=['DELETE'])
 def delete_ticket(ticketID):
     query = '''
         DELETE
         FROM ticket
         WHERE ticketID = {0};
     '''.format(ticketID)
- 
-     # grab order_id and previous drink price for the given drink
-    flightInfo = get_flight_details(flightID)
-    
-    prevSeatsAvailable = str(flightInfo['seatsAvailable'])
-    
-    # calculate price change (if any)
-    seat_change = float(prevSeatsAvailable) - 1
-    
-    # update order total price
-    seat_query = 'UPDATE `flight` SET seatsAvailable = ' + str(seat_change) + ' WHERE flight_id = ' + str(flightID) + ';'
     
     
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    cursor.execute(seat_query)
     
     db.get_db().commit()
     return "successfully deleted ticket #{0}!".format(ticketID)
 
 # updates a given ticket
-@ticket.route('/putTicket/<ticketID>', methods=['PUT'])
+@tickets.route('/putTicket/<ticketID>', methods=['PUT'])
 def update_ticket(ticketID):
     the_data = request.json
 
