@@ -38,7 +38,7 @@ def create_app():
     from src.passengers.passengers import passengers
     from src.flights.flights import flights
     from src.airlineFlightEmployee.airlineFlightEmployee import airlineFlightEmployees
-    from src.ticket.ticket import tickets
+    from src.tickets.tickets import tickets
     from src.crew.crew import crew
     from src.baggage.baggage import baggage
 
