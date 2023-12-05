@@ -6,7 +6,7 @@ from src import db
 tickets = Blueprint('ticket', __name__)
 
 # Get all the products from the database
-@tickets.route('/ticket', methods=['GET'])
+@tickets.route('/tickets', methods=['GET'])
 def get_products():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
@@ -32,7 +32,7 @@ def get_products():
     return jsonify(json_data)
 
 # Get all the products of this id from the database
-@tickets.route('/ticket/<id>', methods=['GET'])
+@tickets.route('/tickets/<id>', methods=['GET'])
 def get_ticket_detail (id):
 
     query = 'SELECT ticketID, flightID, seatNum, class, price, boardingGroup, passengerID FROM ticket WHERE ticketID = ' + str(id)
@@ -50,7 +50,7 @@ def get_ticket_detail (id):
 
 
 # Adds a new ticket
-@tickets.route('/ticket', methods=['POST'])
+@tickets.route('/tickets', methods=['POST'])
 def add_new_ticket():
     
     # collecting data from the request object 
