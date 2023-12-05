@@ -69,7 +69,7 @@ def add_new_baggage():
     query += passengerID+ '", "'
     query += ticketID + '", '
     query += flightID + '", '
-    query += weight+ '", '
+    query += weight+ '")'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -80,21 +80,6 @@ def add_new_baggage():
     return 'Success!'
 
 
-
-# Deletes a given baggage
-@baggage.route('/deleteBaggage/<baggageID>', methods=['DELETE'])
-def delete_baggage(baggageID):
-    query = '''
-        DELETE
-        FROM Baggage
-        WHERE baggageID = {0};
-    '''.format(baggageID)
-    
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    
-    db.get_db().commit()
-    return "successfully deleted baggage #{0}!".format(baggageID)
 
 # Deletes a given baggage
 @baggage.route('/deleteBaggage/<baggageID>', methods=['DELETE'])
