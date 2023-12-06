@@ -35,7 +35,7 @@ def get_products():
 @tickets.route('/tickets/<id>', methods=['GET'])
 def get_ticket_detail (id):
 
-    query = 'SELECT ticketID FROM ticket WHERE passengerID = ' + 1
+    query = 'ticketID, flightID, seatNum, class, price, boardingGroup, passengerID FROM ticket WHERE passengerID = 1' 
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()

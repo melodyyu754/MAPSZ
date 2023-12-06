@@ -12,7 +12,7 @@ def get_crew():
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of products
-    cursor.execute('SELECT ticketID, flightID FROM crew')
+    cursor.execute('SELECT employeeID, flightID FROM crew')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -31,10 +31,11 @@ def get_crew():
 
     return jsonify(json_data)
 
-@crew.route('/crew/<id>', methods=['GET'])
+@crew.route('/crew/<flightID>', methods=['GET'])
 def get_crew_detail (id):
 
-    query = 'SELECT ticketID, flightID FROM crew WHERE flightID = ' + str(id)
+#maybe display all the employees info ideally???
+    query = 'SELECT employeeID, flightID FROM crew WHERE flightID = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -45,3 +46,47 @@ def get_crew_detail (id):
     for row in the_data:
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
+
+#could cause issue :)
+@crew.route('/crew/<employeeID>', methods=['GET'])
+def get_crew_detail (id):
+
+#maybe display all the employees info ideally???
+    query = 'SELECT flightID FROM crew WHERE employeeID = ' + str(id)
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    column_headers = [x[0] for x in cursor.description]
+    json_data = []
+    the_data = cursor.fetchall()
+    for row in the_data:
+        json_data.append(dict(zip(column_headers, row)))
+    return jsonify(json_data)
+
+# Adds a new crew member
+@crew.route('/crew', methods=['POST'])
+def add_new_crew_member():
+    
+    # collecting data from the request object 
+    # Flask gets the request object and .json converts it to a json
+    the_data = request.json
+    # current_app import gives the logger object that logs all the data in the console
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    employeeID = the_data['employeeID']
+    flightID = the_data['flightID']
+
+    # Constructing the query
+    query = 'insert into crew (employeeID, flightID) values ("'
+    query += employeeID + '", "'
+    query += flightID + '", "'
+    current_app.logger.info(query)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'

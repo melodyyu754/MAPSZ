@@ -38,9 +38,9 @@ def create_app():
     from src.passengers.passengers import passengers
     from src.flights.flights import flights
     from src.airlineFlightEmployee.airlineFlightEmployee import airlineFlightEmployees
-    # from src.tickets.tickets import tickets
-    # from src.crew.crew import crew
-    # from src.baggage.baggage import baggage
+    from src.tickets.tickets import tickets
+    from src.crew.crew import crew
+    from src.baggage.baggage import baggage
 
 
     # Register the routes from each Blueprint with the app object
@@ -50,9 +50,9 @@ def create_app():
     app.register_blueprint(airports,    url_prefix='/a')
     app.register_blueprint(flights,    url_prefix='/f')
     app.register_blueprint(airlineFlightEmployees,    url_prefix='/afe')
-    # app.register_blueprint(tickets, url_prefix = '/t')
-    # app.register_blueprint(crew, url_prefix = '/cr')
-    # app.register_blueprint(baggage, url_prefix = '/b')
+    app.register_blueprint(tickets, url_prefix = '/t')
+    app.register_blueprint(crew, url_prefix = '/cr')
+    app.register_blueprint(baggage, url_prefix = '/b')
 
 
 

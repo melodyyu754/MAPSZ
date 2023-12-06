@@ -55,7 +55,7 @@ def add_new_airline_flight_employee():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    employeeID = the_data['employeeID']
+    #employeeID = the_data['employeeID']
     fName = the_data['fName']
     lName = the_data['lName']
     salary = the_data['salary']
@@ -66,7 +66,7 @@ def add_new_airline_flight_employee():
 
     # Constructing the query
     query = 'insert into airlineFlightEmployees (employeeID, fName, lName, salary, title, sex, emailAddress, birthDate) values ("'
-    query += employeeID + '", "'
+   # query += employeeID + '", "'
     query += fName + '", "'
     query += lName + '", '
     query += salary + '", '
@@ -82,6 +82,23 @@ def add_new_airline_flight_employee():
     db.get_db().commit()
     
     return 'Success!'
+
+# Deletes a given ticket
+# Deletes all baggage that contain that ticket as well
+@airlineFlightEmployees.route('/deleteAirlineFlightEmployee/<employeeID>', methods=['DELETE'])
+def delete_airline_flight_employee(employeeID):
+    query = '''
+        DELETE
+        FROM airlineFlightEmployee
+        WHERE employeeID = {0};
+    '''.format(employeeID)
+    
+    
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    
+    db.get_db().commit()
+    return "successfully deleted airline flight employee #{0}!".format(employeeID)
 
 # # Changes size, price, sugar level, and/or ice level of a drink in a given order
 # @airlineFlightEmployees.route('/editEmployee/<employeeID>', methods=['PUT'])

@@ -56,7 +56,6 @@ def add_new_passenger():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    flightID = the_data['flightID']
     seatsAvailable = the_data['seatsAvailable']
     airplaneID = the_data['airplaneID']
     airlineID = the_data['airlineID']
@@ -70,8 +69,7 @@ def add_new_passenger():
     arrivalGate = the_data['arrivalGate']
 
     # Constructing the query
-    query = 'insert into flights (flightID, seatsAvailable, airplaneID, airlineID, departureAirport, departureTime, departureTerminal, departureGate, arrivalAirport, arrivalTime, arrivalTerminal, arrivalGate) values ("'
-    query += flightID + '", "'
+    query = 'insert into flights (seatsAvailable, airplaneID, airlineID, departureAirport, departureTime, departureTerminal, departureGate, arrivalAirport, arrivalTime, arrivalTerminal, arrivalGate) values ("'
     query += seatsAvailable + '", "'
     query += airplaneID + '", '
     query += airlineID + '", '
@@ -134,6 +132,7 @@ def update_drink(flightID):
     the_query = 'UPDATE Drink SET '
     the_query += 'seatsAvailable = "' + seatsAvailable + '", '
     the_query += 'airplaneID = "' + airplaneID + '", '
+    the_query += 'departureTime = "' + departureTime + '", '
     the_query += 'departureTerminal = "' + departureTerminal + '", '
     the_query += 'departureGate = "' + departureGate + '", '
     the_query += 'arrivalAirport = "' + arrivalAirport + '", '
