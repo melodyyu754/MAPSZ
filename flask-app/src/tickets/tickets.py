@@ -31,11 +31,11 @@ def get_products():
 
     return jsonify(json_data)
 
-# Get all the products of this id from the database
+# Get all the tickets of a specific passenger from the database
 @tickets.route('/tickets/<id>', methods=['GET'])
 def get_ticket_detail (id):
 
-    query = 'SELECT ticketID, flightID, seatNum, class, price, boardingGroup, passengerID FROM ticket WHERE ticketID = ' + str(id)
+    query = 'SELECT ticketID FROM ticket WHERE passengerID = ' + 1
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -60,7 +60,7 @@ def add_new_ticket():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    ticketID = the_data['ticketID']
+    ticketID = 1
     flightID = the_data['flightID']
     seatNum = the_data['seatNum']
     classType = the_data['class']
@@ -87,7 +87,7 @@ def add_new_ticket():
     return 'Success!'
 
 # Deletes a given ticket
-# Deletes all baggage that contain that drink as well
+# Deletes all baggage that contain that ticket as well
 @tickets.route('/deleteTicket/<ticketID>', methods=['DELETE'])
 def delete_ticket(ticketID):
     query = '''
