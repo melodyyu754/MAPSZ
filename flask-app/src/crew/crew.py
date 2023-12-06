@@ -49,7 +49,7 @@ def get_crew_detail (id):
 
 #could cause issue :)
 @crew.route('/crew/<employeeID>', methods=['GET'])
-def get_crew_detail (id):
+def get_flight_detail (id):
 
 #maybe display all the employees info ideally???
     query = 'SELECT flightID FROM crew WHERE employeeID = ' + str(id)
