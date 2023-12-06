@@ -7,7 +7,7 @@ baggage = Blueprint('baggage', __name__)
 @baggage.route('/baggage', methods=['GET'])
 def get_baggage():
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT baggageID, ticketID, passengerID, weight FROM baggage')
+    cursor.execute('SELECT baggageID, ticketID, passengerID, bagWeight FROM baggage')
     column_headers = [x[0] for x in cursor.description]
     json_data = [dict(zip(column_headers, row)) for row in cursor.fetchall()]
     return jsonify(json_data)
@@ -32,9 +32,9 @@ def add_new_baggage():
     passengerID = 1
     ticketID = the_data['ticketID']
     flightID = the_data['flightID']
-    weight = the_data['weight']
+    weight = the_data['bagWeight']
 
-    query = 'INSERT INTO baggage (passengerID, ticketID, flightID, weight) VALUES ({0}, {1}, {2}, {3})'.format(
+    query = 'INSERT INTO baggage (passengerID, ticketID, flightID, bagWeight) VALUES ({0}, {1}, {2}, {3})'.format(
         passengerID, ticketID, flightID, weight)
     
     current_app.logger.info(query)
@@ -65,12 +65,12 @@ def delete_baggage(baggageID):
 def update_baggage(baggageID):
     the_data = request.json
 
-    weight = the_data['weight']
+    weight = the_data['bagWeight']
     
     current_app.logger.info(the_data)
 
     the_query = 'UPDATE baggage SET '
-    the_query += 'weight = "' + str(weight) + '", '
+    the_query += 'bagWeight = "' + str(weight) + '", '
     the_query += 'WHERE baggageID = {0};'.format(baggageID)
 
     current_app.logger.info(the_query)
