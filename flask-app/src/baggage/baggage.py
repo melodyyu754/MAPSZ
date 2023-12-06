@@ -13,14 +13,17 @@ def get_baggage():
     return jsonify(json_data)
 
 # Get a specific airport from the database
-@baggage.route('/baggage/<id>', methods=['GET'])
+@baggage.route('/baggage/<int:id>', methods=['GET'])
 def get_baggage_detail(id):
-    query = 'SELECT baggageID WHERE ticketID = ' + id
+    query = 'SELECT baggageID, ticketID, passengerID, bagWeight FROM baggage WHERE passengerID = %s'
     current_app.logger.info(query)
+
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (id,))
+    
     column_headers = [x[0] for x in cursor.description]
     json_data = [dict(zip(column_headers, row)) for row in cursor.fetchall()]
+
     return jsonify(json_data)
 
 # Adds a new baggage
@@ -34,16 +37,17 @@ def add_new_baggage():
     flightID = the_data['flightID']
     weight = the_data['bagWeight']
 
-    query = 'INSERT INTO baggage (passengerID, ticketID, flightID, bagWeight) VALUES ({0}, {1}, {2}, {3})'.format(
-        passengerID, ticketID, flightID, weight)
-    
+    query = 'INSERT INTO baggage (passengerID, ticketID, flightID, bagWeight) VALUES (%s, %s, %s, %s)'
+    query_values = (passengerID, ticketID, flightID, weight)
+
     current_app.logger.info(query)
-    
+
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, query_values)
     db.get_db().commit()
-    
+
     return 'Success!'
+
 
 # Deletes a given baggage
 @baggage.route('/baggage', methods=['DELETE'])
@@ -54,16 +58,30 @@ def delete_baggage():
 
     baggage_id = the_data['baggageID']
 
+@baggage.route('/baggage', methods=['DELETE'])
+def delete_baggage():
+
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    baggage_id = the_data['baggageID']
+
     query = '''
         DELETE
+        FROM baggage
+        WHERE baggageID = %s;
+    '''
+
         FROM Baggage
         WHERE baggageID = %s;
     '''
     
     cursor = db.get_db().cursor()
-    cursor.execute(query)
-    
+    cursor.execute(query, (baggage_id,))  # Pass the parameter values as a tuple
+
     db.get_db().commit()
+    return "Successfully deleted baggage #{0}!".format(baggage_id)
+
     return "Successfully deleted baggage #{0}!".format(baggage_id)
 
 

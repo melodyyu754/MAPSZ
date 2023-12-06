@@ -35,7 +35,7 @@ def get_products():
 @tickets.route('/tickets/<id>', methods=['GET'])
 def get_ticket_detail (id):
 
-    query = 'ticketID, flightID, seatNum, class, price, boardingGroup, passengerID FROM ticket WHERE passengerID = 1' 
+    query = 'SELECT ticketID, flightID, seatNum, class, price, boardingGroup, passengerID FROM ticket WHERE passengerID = 1' 
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -46,7 +46,6 @@ def get_ticket_detail (id):
     for row in the_data:
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
-
 
 
 # Adds a new ticket

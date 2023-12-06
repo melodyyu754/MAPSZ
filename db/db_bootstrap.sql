@@ -974,11 +974,11 @@ INSERT INTO passenger (fName, lName, phone, sex, birthDate, email, street, zipco
 
 -- Sample data for ticket table
 INSERT INTO ticket (flightID, seatNum, class, price, boardingGroup, passengerID) VALUES
-(46, 1, 'Business', 19167.8, 3, 25),
-(7, 2, 'Business', 9666.99, 2, 29),
-(17, 3, 'Business', 14597.71, 3, 19),
-(50, 4, 'Business', 3424.81, 1, 46),
-(31, 5, 'Business', 19803.8, 1, 5),
+(46, 1, 'Business', 19167.8, 3, 1),
+(7, 2, 'Business', 9666.99, 2, 1),
+(17, 3, 'Business', 14597.71, 3, 1),
+(50, 4, 'Business', 3424.81, 1, 1),
+(31, 5, 'Business', 19803.8, 1, 1),
 (49, 6, 'Business', 9446.58, 4, 30),
 (35, 7, 'First', 17442.19, 5, 29),
 (17, 8, 'Economy', 1805.05, 2, 10),
@@ -1028,15 +1028,15 @@ INSERT INTO ticket (flightID, seatNum, class, price, boardingGroup, passengerID)
 
 -- Sample data for baggage table
 INSERT INTO baggage (baggageID, passengerID, ticketID, flightID, bagWeight) VALUES
-(1, 25, 4, 4, 100),
-(2, 29, 32, 9, 37),
-(3, 19, 43, 46, 80),
-(4, 46, 4, 28, 61),
-(5, 5, 40, 37, 107),
-(6, 30, 36, 4, 23),
-(7, 29, 44, 4, 37),
-(8, 10, 31, 48, 40),
-(9, 35, 28, 25, 120),
+(1, 1, 4, 4, 100),
+(2, 1, 32, 9, 37),
+(3, 1, 43, 46, 80),
+(4, 1, 4, 28, 61),
+(5, 1, 40, 37, 107),
+(6, 1, 36, 4, 23),
+(7, 1, 44, 4, 37),
+(8, 1, 31, 48, 40),
+(9, 1, 28, 25, 120),
 (10, 24, 13, 47, 7),
 (11, 47, 32, 29, 27),
 (12, 34, 46, 35, 67),
