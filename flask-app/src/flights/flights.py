@@ -51,39 +51,25 @@ def get_flight_details (id):
 @flights.route('/flights', methods=['POST'])
 def add_new_passenger():
     
-    # collecting data from the request object 
+    # Collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
 
-    #extracting the variable
+    # Extracting the variables
     seatsAvailable = the_data['seatsAvailable']
     airplaneID = the_data['airplaneID']
     airlineID = the_data['airlineID']
     departureAirport = the_data['departureAirport']
     departureTime = the_data['departureTime']
-    departureTerminal = the_data['departureTerminal']
-    departureGate = the_data['departureGate']
     arrivalAirport = the_data['arrivalAirport']
     arrivalTime = the_data['arrivalTime']
-    arrivalTerminal = the_data['arrivalTerminal']
-    arrivalGate = the_data['arrivalGate']
 
     # Constructing the query
-    query = 'insert into flights (seatsAvailable, airplaneID, airlineID, departureAirport, departureTime, departureTerminal, departureGate, arrivalAirport, arrivalTime, arrivalTerminal, arrivalGate) values ("'
-    query += seatsAvailable + '", "'
-    query += airplaneID + '", '
-    query += airlineID + '", '
-    query += departureAirport + '", '
-    query += departureTime + '", '
-    query += departureTerminal + '", '
-    query += departureGate + '", '
-    query += arrivalAirport + '", '
-    query += arrivalTime + '", '
-    query += arrivalTerminal + '", '
-    query += arrivalGate + '", '
+    query = 'INSERT INTO flight (seatsAvailable, airplaneID, airlineID, departureAirport, departureTime, arrivalAirport, arrivalTime) VALUES ('
+    query += f'"{seatsAvailable}", "{airplaneID}", "{airlineID}", "{departureAirport}", "{departureTime}",  "{arrivalAirport}", "{arrivalTime}")'
     current_app.logger.info(query)
 
-    # executing and committing the insert statement 
+    # Executing and committing the insert statement 
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
@@ -91,10 +77,11 @@ def add_new_passenger():
     return 'Success!'
 
 
+
 # Deletes a given drink
 # Also reduces the corresponding order's total price
 @flights.route('/flights', methods=['DELETE'])
-def delete_flight(flightID):
+def delete_flight():
     the_data = request.json
     current_app.logger.info(the_data)
 
@@ -102,25 +89,22 @@ def delete_flight(flightID):
 
     query = '''
         DELETE
-        FROM Flight
+        FROM flight
         WHERE flightID = %s;
     '''
     
     cursor = db.get_db().cursor()
-    cursor.execute(query)
-    
+    cursor.execute(query, (flight_id,))  # Pass the parameter value as a tuple
+
     db.get_db().commit()
-    return "successfully deleted ticket #{0}!".format(flight_id)
+    return "Successfully deleted flight #{0}!".format(flight_id)
+
 
 
 @flights.route('/flights', methods=['PUT'])
 def update_flight():
-    
     the_data = request.json
 
-#can i just not include the attrs i dont want to update???
-    #airlineID = the_data['airlineID']
-    #departureAirport = the_data['departureAirport']
     flight_id = the_data['flightID']
     departureTime = the_data['departureTime']
     arrivalTime = the_data['arrivalTime']
@@ -128,14 +112,15 @@ def update_flight():
     current_app.logger.info(the_data)
 
     the_query = 'UPDATE Flight SET '
-    the_query += 'departureTime = "' + departureTime + '", '
-    the_query += 'arrivalTime = "' + arrivalTime + '", '
-    the_query += 'WHERE flightID = {0};'.format(flight_id)
+    the_query += 'departureTime = %s, '  # Use parameterized queries
+    the_query += 'arrivalTime = %s '  # Use parameterized queries
+    the_query += 'WHERE flightID = %s;'
 
     current_app.logger.info(the_query)
-    
+
     cursor = db.get_db().cursor()
-    cursor.execute(the_query)
+    cursor.execute(the_query, (departureTime, arrivalTime, flight_id))  # Pass the parameter values as a tuple
     db.get_db().commit()
 
-    return "successfully editted flight #{0}!".format(flight_id)
+    return "Successfully edited flight #{0}!".format(flight_id)
+
