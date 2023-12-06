@@ -15,7 +15,7 @@ def get_baggage():
 # Get a specific airport from the database
 @baggage.route('/baggage/<id>', methods=['GET'])
 def get_baggage_detail(id):
-    query = 'SELECT baggageID WHERE ticketID = ' + id
+    query = 'SELECT baggageID WHERE ticketID = ' + str(id)
     current_app.logger.info(query)
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -34,16 +34,17 @@ def add_new_baggage():
     flightID = the_data['flightID']
     weight = the_data['bagWeight']
 
-    query = 'INSERT INTO baggage (passengerID, ticketID, flightID, bagWeight) VALUES ({0}, {1}, {2}, {3})'.format(
-        passengerID, ticketID, flightID, weight)
-    
+    query = 'INSERT INTO baggage (passengerID, ticketID, flightID, bagWeight) VALUES (%s, %s, %s, %s)'
+    query_values = (passengerID, ticketID, flightID, weight)
+
     current_app.logger.info(query)
-    
+
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, query_values)
     db.get_db().commit()
-    
+
     return 'Success!'
+
 
 # Deletes a given baggage
 @baggage.route('/baggage/<baggageID>', methods=['DELETE'])
