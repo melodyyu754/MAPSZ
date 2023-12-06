@@ -974,11 +974,11 @@ INSERT INTO passenger (fName, lName, phone, sex, birthDate, email, street, zipco
 
 -- Sample data for ticket table
 INSERT INTO ticket (flightID, seatNum, class, price, boardingGroup, passengerID) VALUES
-(46, 1, 'Business', 19167.8, 3, 25),
-(7, 2, 'Business', 9666.99, 2, 29),
-(17, 3, 'Business', 14597.71, 3, 19),
-(50, 4, 'Business', 3424.81, 1, 46),
-(31, 5, 'Business', 19803.8, 1, 5),
+(46, 1, 'Business', 19167.8, 3, 1),
+(7, 2, 'Business', 9666.99, 2, 1),
+(17, 3, 'Business', 14597.71, 3, 1),
+(50, 4, 'Business', 3424.81, 1, 1),
+(31, 5, 'Business', 19803.8, 1, 1),
 (49, 6, 'Business', 9446.58, 4, 30),
 (35, 7, 'First', 17442.19, 5, 29),
 (17, 8, 'Economy', 1805.05, 2, 10),
