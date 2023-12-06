@@ -50,19 +50,26 @@ def add_new_baggage():
 
 
 # Deletes a given baggage
-@baggage.route('/baggage/<baggageID>', methods=['DELETE'])
-def delete_baggage(baggageID):
+@baggage.route('/baggage', methods=['DELETE'])
+def delete_baggage():
+
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    baggage_id = the_data['baggageID']
+
     query = '''
         DELETE
-        FROM Baggage
-        WHERE baggageID = {0};
-    '''.format(baggageID)
-    
+        FROM baggage
+        WHERE baggageID = %s;
+    '''
+
     cursor = db.get_db().cursor()
-    cursor.execute(query)
-    
+    cursor.execute(query, (baggage_id,))  # Pass the parameter values as a tuple
+
     db.get_db().commit()
-    return "Successfully deleted baggage #{0}!".format(baggageID)
+    return "Successfully deleted baggage #{0}!".format(baggage_id)
+
 
 # updates a given ticket
 @baggage.route('/baggage/<baggageID>', methods=['PUT'])
