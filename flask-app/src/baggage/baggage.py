@@ -92,4 +92,3 @@ def update_baggage():
     db.get_db().commit()
 
     return "Successfully edited baggage #{0}!".format(baggage_id)
-
