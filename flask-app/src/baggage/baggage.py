@@ -71,23 +71,25 @@ def delete_baggage():
     return "Successfully deleted baggage #{0}!".format(baggage_id)
 
 
-# updates a given ticket
-@baggage.route('/baggage/<baggageID>', methods=['PUT'])
-def update_baggage(baggageID):
+# Updates a given baggage
+@baggage.route('/baggage', methods=['PUT'])
+def update_baggage():
     the_data = request.json
 
+    baggage_id = the_data['baggageID']
     weight = the_data['bagWeight']
     
     current_app.logger.info(the_data)
 
     the_query = 'UPDATE baggage SET '
-    the_query += 'bagWeight = "' + str(weight) + '", '
-    the_query += 'WHERE baggageID = {0};'.format(baggageID)
+    the_query += 'bagWeight = %s '  # Use a parameterized query to prevent SQL injection
+    the_query += 'WHERE baggageID = %s;'
 
     current_app.logger.info(the_query)
     
     cursor = db.get_db().cursor()
-    cursor.execute(the_query)
+    cursor.execute(the_query, (weight, baggage_id))  # Pass the parameter values as a tuple
     db.get_db().commit()
 
-    return "successfully editted baggage #{0}!".format(baggageID)
+    return "Successfully edited baggage #{0}!".format(baggage_id)
+
