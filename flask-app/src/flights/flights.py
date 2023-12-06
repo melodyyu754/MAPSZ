@@ -93,53 +93,44 @@ def add_new_passenger():
 
 # Deletes a given drink
 # Also reduces the corresponding order's total price
-@flights.route('/flights/<flightID>', methods=['DELETE'])
+@flights.route('/flights', methods=['DELETE'])
 def delete_flight(flightID):
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    flight_id = the_data['flightID']
+
     query = '''
         DELETE
         FROM Flight
-        WHERE flightID = {0};
-    '''.format(flightID)
-    #it associated 0 with the id somehow like in c++
+        WHERE flightID = %s;
+    '''
     
     cursor = db.get_db().cursor()
     cursor.execute(query)
     
     db.get_db().commit()
-    return "successfully deleted flight #{0}!".format(flightID)
+    return "successfully deleted ticket #{0}!".format(flight_id)
 
 
-@flights.route('/flights/<flightID>', methods=['PUT'])
-def update_drink(flightID):
+@flights.route('/flights', methods=['PUT'])
+def update_flight():
     
     the_data = request.json
 
 #can i just not include the attrs i dont want to update???
-    seatsAvailable = the_data['seatsAvailable']
-    airplaneID = the_data['airplaneID']
     #airlineID = the_data['airlineID']
     #departureAirport = the_data['departureAirport']
+    flight_id = the_data['flightID']
     departureTime = the_data['departureTime']
-    departureTerminal = the_data['departureTerminal']
-    departureGate = the_data['departureGate']
-    arrivalAirport = the_data['arrivalAirport']
     arrivalTime = the_data['arrivalTime']
-    arrivalTerminal = the_data['arrivalTerminal']
-    arrivalGate = the_data['arrivalGate']
 
     current_app.logger.info(the_data)
 
-    the_query = 'UPDATE Drink SET '
-    the_query += 'seatsAvailable = "' + seatsAvailable + '", '
-    the_query += 'airplaneID = "' + airplaneID + '", '
+    the_query = 'UPDATE Flight SET '
     the_query += 'departureTime = "' + departureTime + '", '
-    the_query += 'departureTerminal = "' + departureTerminal + '", '
-    the_query += 'departureGate = "' + departureGate + '", '
-    the_query += 'arrivalAirport = "' + arrivalAirport + '", '
     the_query += 'arrivalTime = "' + arrivalTime + '", '
-    the_query += 'arrivalTerminal = "' + arrivalTerminal + '", '
-    the_query += 'arrivalGate = "' + arrivalGate + '", '
-    the_query += 'WHERE flightID = {0};'.format(flightID)
+    the_query += 'WHERE flightID = {0};'.format(flight_id)
 
     current_app.logger.info(the_query)
     
@@ -147,4 +138,4 @@ def update_drink(flightID):
     cursor.execute(the_query)
     db.get_db().commit()
 
-    return "successfully editted flight #{0}!".format(flightID)
+    return "successfully editted flight #{0}!".format(flight_id)
