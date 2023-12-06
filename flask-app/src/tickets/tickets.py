@@ -88,23 +88,28 @@ def add_new_ticket():
 
 # Deletes a given ticket
 # Deletes all baggage that contain that ticket as well
-@tickets.route('/deleteTicket/<ticketID>', methods=['DELETE'])
-def delete_ticket(ticketID):
+@tickets.route('/ticket/<ticketID>', methods=['DELETE'])
+def delete_ticket():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    ticket_id = the_data['ticketID']
+    
     query = '''
         DELETE
         FROM ticket
-        WHERE ticketID = {0};
-    '''.format(ticketID)
+        WHERE ticketID = ticket_id;
+    '''.format(ticket_id)
     
     
     cursor = db.get_db().cursor()
     cursor.execute(query)
     
     db.get_db().commit()
-    return "successfully deleted ticket #{0}!".format(ticketID)
+    return "successfully deleted ticket #{0}!".format(ticket_id)
 
 # updates a given ticket
-@tickets.route('/putTicket/<ticketID>', methods=['PUT'])
+@tickets.route('/ticket/<ticketID>', methods=['PUT'])
 def update_ticket(ticketID):
     the_data = request.json
 

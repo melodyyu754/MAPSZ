@@ -46,7 +46,7 @@ def add_new_baggage():
     return 'Success!'
 
 # Deletes a given baggage
-@baggage.route('/deleteBaggage/<baggageID>', methods=['DELETE'])
+@baggage.route('/baggage/<baggageID>', methods=['DELETE'])
 def delete_baggage(baggageID):
     query = '''
         DELETE
@@ -61,7 +61,7 @@ def delete_baggage(baggageID):
     return "Successfully deleted baggage #{0}!".format(baggageID)
 
 # updates a given ticket
-@baggage.route('/putBaggage/<baggageID>', methods=['PUT'])
+@baggage.route('/baggage/<baggageID>', methods=['PUT'])
 def update_baggage(baggageID):
     the_data = request.json
 
