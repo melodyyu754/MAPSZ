@@ -67,26 +67,21 @@ def get_flight_detail (id):
 # Adds a new crew member
 @crew.route('/crew', methods=['POST'])
 def add_new_crew_member():
-    
-    # collecting data from the request object 
-    # Flask gets the request object and .json converts it to a json
+    # collecting data from the request object
     the_data = request.json
-    # current_app import gives the logger object that logs all the data in the console
     current_app.logger.info(the_data)
 
-    #extracting the variable
+    # extracting the variables
     employeeID = the_data['employeeID']
     flightID = the_data['flightID']
 
-    # Constructing the query
-    query = 'insert into crew (employeeID, flightID) values ("'
-    query += employeeID + '", "'
-    query += flightID + '", "'
+    # Constructing the query with parameterized values
+    query = 'INSERT INTO crew (employeeID, flightID) VALUES (%s, %s)'
     current_app.logger.info(query)
 
-    # executing and committing the insert statement 
+    # executing and committing the insert statement
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (employeeID, flightID))
     db.get_db().commit()
-    
+
     return 'Success!'

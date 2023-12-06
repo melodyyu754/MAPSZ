@@ -83,9 +83,7 @@ def add_new_airline_flight_employee():
     
     return 'Success!'
 
-# Deletes a given ticket
-# Deletes all baggage that contain that ticket as well
-@airlineFlightEmployees.route('/deleteAirlineFlightEmployee', methods=['DELETE'])
+@airlineFlightEmployees.route('/airlineFlightEmployees', methods=['DELETE'])
 def delete_airline_flight_employee():
     the_data = request.json
     current_app.logger.info(the_data)
@@ -93,17 +91,17 @@ def delete_airline_flight_employee():
     afe_id = the_data['employeeID']
 
     query = '''
-        DELETE
-        FROM airlineFlightEmployee
+        DELETE FROM airlineFlightEmployee
         WHERE employeeID = %s;
     '''
     
-    
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (afe_id,))
     
     db.get_db().commit()
-    return "successfully deleted airline flight employee #{0}!".format(afe_id)
+    return "Successfully deleted airline flight employee #{0}!".format(afe_id)
+
+
 
 # # Changes size, price, sugar level, and/or ice level of a drink in a given order
 # @airlineFlightEmployees.route('/editEmployee/<employeeID>', methods=['PUT'])

@@ -51,10 +51,8 @@ def create_app():
     app.register_blueprint(flights,    url_prefix='/f')
     app.register_blueprint(airlineFlightEmployees,    url_prefix='/afe')
     app.register_blueprint(tickets, url_prefix = '/t')
-    # app.register_blueprint(crew, url_prefix = '/cr')
+    app.register_blueprint(crew, url_prefix = '/cr')
     app.register_blueprint(baggage, url_prefix = '/b')
-
-
 
 
     # Don't forget to return the app object
