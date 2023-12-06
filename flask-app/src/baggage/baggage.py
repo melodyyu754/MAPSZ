@@ -46,32 +46,40 @@ def add_new_baggage():
     return 'Success!'
 
 # Deletes a given baggage
-@baggage.route('/baggage/<baggageID>', methods=['DELETE'])
-def delete_baggage(baggageID):
+@baggage.route('/baggage', methods=['DELETE'])
+def delete_baggage():
+
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    baggage_id = the_data['baggageID']
+
     query = '''
         DELETE
         FROM Baggage
-        WHERE baggageID = {0};
-    '''.format(baggageID)
+        WHERE baggageID = %s;
+    '''
     
     cursor = db.get_db().cursor()
     cursor.execute(query)
     
     db.get_db().commit()
-    return "Successfully deleted baggage #{0}!".format(baggageID)
+    return "Successfully deleted baggage #{0}!".format(baggage_id)
+
 
 # updates a given ticket
-@baggage.route('/baggage/<baggageID>', methods=['PUT'])
-def update_baggage(baggageID):
+@baggage.route('/baggage/', methods=['PUT'])
+def update_baggage():
     the_data = request.json
 
+    baggage_id = the_data['baggageID']
     weight = the_data['bagWeight']
     
     current_app.logger.info(the_data)
 
     the_query = 'UPDATE baggage SET '
     the_query += 'bagWeight = "' + str(weight) + '", '
-    the_query += 'WHERE baggageID = {0};'.format(baggageID)
+    the_query += 'WHERE baggageID = {0};'.format(baggage_id)
 
     current_app.logger.info(the_query)
     
@@ -79,4 +87,4 @@ def update_baggage(baggageID):
     cursor.execute(the_query)
     db.get_db().commit()
 
-    return "successfully editted baggage #{0}!".format(baggageID)
+    return "successfully editted baggage #{0}!".format(baggage_id)
