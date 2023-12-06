@@ -13,14 +13,17 @@ def get_baggage():
     return jsonify(json_data)
 
 # Get a specific airport from the database
-@baggage.route('/baggage/<id>', methods=['GET'])
+@baggage.route('/baggage/<int:id>', methods=['GET'])
 def get_baggage_detail(id):
-    query = 'SELECT baggageID WHERE ticketID = ' + str(id)
+    query = 'SELECT baggageID, ticketID, passengerID, bagWeight FROM baggage WHERE passengerID = %s'
     current_app.logger.info(query)
+
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (id,))
+    
     column_headers = [x[0] for x in cursor.description]
     json_data = [dict(zip(column_headers, row)) for row in cursor.fetchall()]
+
     return jsonify(json_data)
 
 # Adds a new baggage
