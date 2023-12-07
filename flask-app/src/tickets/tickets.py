@@ -51,39 +51,32 @@ def get_ticket_detail (id):
 # Adds a new ticket
 @tickets.route('/tickets', methods=['POST'])
 def add_new_ticket():
-    
-    # collecting data from the request object 
+
+    # collecting data from the request object
     # Flask gets the request object and .json converts it to a json
     the_data = request.json
     # current_app import gives the logger object that logs all the data in the console
     current_app.logger.info(the_data)
 
-    #extracting the variable
-    ticketID = 1
-    flightID = the_data['flightID']
-    seatNum = the_data['seatNum']
-    classType = the_data['class']
-    price = the_data['price']
-    boardingGroup = the_data['boardingGroup']
-    passengerID = the_data['passengerID']
+    # extracting the variable
+    flightID = the_data.get('flightID')
+    seatNum = the_data.get('seatNum')
+    classType = the_data.get('class')
+    price = the_data.get('price')
+    boardingGroup = the_data.get('boardingGroup')
+    passengerID = the_data.get('passengerID')
 
     # Constructing the query
-    query = 'insert into ticket (ticketID, flightID, seatNum, class, price, boardingGroup, passengerID) values ("'
-    query += ticketID + '", "'
-    query += flightID + '", "'
-    query += seatNum + '", '
-    query += classType + '", '
-    query += price + '", '
-    query += boardingGroup + '", '
-    query += passengerID + '", '
+    query = f'INSERT INTO ticket (flightID, seatNum, class, price, boardingGroup, passengerID) VALUES ("{flightID}", "{seatNum}", "{classType}", "{price}", "{boardingGroup}", "{passengerID}")'
     current_app.logger.info(query)
 
-    # executing and committing the insert statement 
+    # executing and committing the insert statement
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
-    
+
     return 'Success!'
+
 
 # Deletes a given ticket
 # Deletes all baggage that contain that ticket as well

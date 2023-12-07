@@ -32,11 +32,11 @@ def get_flights():
 
     return jsonify(json_data)
 
-#Get a specific flight from the database
+#Get all the flights for a specific airline
 @flights.route('/flights/<id>', methods=['GET'])
 def get_flight_details (id):
 
-    query = 'SELECT flightID, seatsAvailable, airplaneID, airlineID, departureAirport, departureTime, departureTerminal, departureGate, arrivalAirport, arrivalTime, arrivalTerminal, arrivalGate FROM flight WHERE flightID = ' + str(id)
+    query = 'SELECT flightID, seatsAvailable, airplaneID, airlineID, departureAirport, departureTime, departureTerminal, departureGate, arrivalAirport, arrivalTime, arrivalTerminal, arrivalGate FROM flight WHERE airlineID = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
